@@ -41,9 +41,11 @@ export default function LandingPage() {
               <Button variant="ghost" className="text-sm font-medium normal-case tracking-normal">
                 About
               </Button>
-              <Button variant="ghost" className="text-sm font-medium normal-case tracking-normal">
-                Github
-              </Button>
+              <a href="https://github.com/hopewell777/starksplit" target="_blank" rel="noopener noreferrer">
+                <Button variant="ghost" className="text-sm font-medium normal-case tracking-normal">
+                  Github
+                </Button>
+              </a>
               <Button 
                 variant="ghost" 
                 className="text-sm font-medium normal-case tracking-normal"
@@ -289,8 +291,8 @@ export default function LandingPage() {
              Built for Starknet • Powered by Starkzap & Privy
           </p>
           <div className="flex space-x-6">
-            <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-text-muted cursor-pointer hover:text-white transition-colors">Privacy</span>
-            <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-text-muted cursor-pointer hover:text-white transition-colors">Terms</span>
+            <a href="https://github.com/hopewell777/starksplit" target="_blank" rel="noopener noreferrer" className="text-[10px] uppercase tracking-[0.2em] font-bold text-text-muted cursor-pointer hover:text-white transition-colors">Privacy</a>
+            <a href="https://github.com/hopewell777/starksplit" target="_blank" rel="noopener noreferrer" className="text-[10px] uppercase tracking-[0.2em] font-bold text-text-muted cursor-pointer hover:text-white transition-colors">Terms</a>
           </div>
         </div>
       </footer>

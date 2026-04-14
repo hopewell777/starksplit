@@ -11,7 +11,9 @@ export default function Providers({ children }: { children: React.ReactNode }) {
       appId={appId}
       config={{
         embeddedWallets: {
-          createOnLogin: "users-without-wallets",
+          ethereum: {
+            createOnLogin: "users-without-wallets",
+          },
           showWalletUIs: false,
         },
         appearance: {
