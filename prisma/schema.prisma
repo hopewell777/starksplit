@@ -1,0 +1,101 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+}
+
+model User {
+  id             String    @id @default(cuid())
+  privyId        String    @unique            // Privy DID
+  walletAddress  String?   @unique            // Starknet address
+  email          String?   @unique
+  username       String?   @unique
+  avatarUrl      String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  // Relations
+  createdExpenses Expense[]     @relation("CreatedExpenses")
+  splits          Split[]       @relation("DebtorSplits")
+  notifications   Notification[]
+
+  @@index([walletAddress])
+  @@index([email])
+}
+
+model Expense {
+  id          String        @id @default(cuid())
+  creatorId   String
+  title       String
+  totalAmount Decimal       @db.Decimal(36, 18)  // wei precision
+  currency    String        @default("STRK")      // STRK, USDC, ETH
+  tags        String[]                            // ["dinner", "airbnb"]
+  splitType   SplitType     @default(EQUAL)
+  status      ExpenseStatus @default(PENDING)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  // Relations
+  creator     User          @relation("CreatedExpenses", fields: [creatorId], references: [id])
+  splits      Split[]
+
+  @@index([creatorId])
+  @@index([status])
+}
+
+model Split {
+  id              String      @id @default(cuid())
+  expenseId       String
+  debtorId        String
+  amountOwed      Decimal     @db.Decimal(36, 18)
+  status          SplitStatus @default(UNPAID)
+  transactionHash String?                         // On-chain tx hash
+  paidAt          DateTime?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  // Relations
+  expense         Expense     @relation(fields: [expenseId], references: [id], onDelete: Cascade)
+  debtor          User        @relation("DebtorSplits", fields: [debtorId], references: [id])
+
+  @@unique([expenseId, debtorId])
+  @@index([debtorId])
+  @@index([status])
+}
+
+enum SplitType {
+  EQUAL
+  CUSTOM
+}
+
+enum ExpenseStatus {
+  PENDING
+  PARTIALLY_PAID
+  COMPLETED
+  CANCELLED
+}
+
+enum SplitStatus {
+  UNPAID
+  PENDING_CONFIRMATION
+  PAID
+  FAILED
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  title     String
+  message   String
+  type      String   // 'SPLIT_CREATED', 'PAYMENT_RECEIVED', etc.
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([isRead])
+}

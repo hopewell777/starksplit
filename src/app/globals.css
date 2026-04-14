@@ -1,26 +1,140 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Backgrounds - Deep black background for dark theme */
+  --bg-void: #000000; /* Deep black background */
+  --bg-surface: #0a0a0a; /* Very dark slate for elevated surfaces */
+  --bg-elevated: #111111; /* Slightly lighter for cards */
+  --bg-glass-border: rgba(255, 255, 255, 0.05);
+
+  /* Typography - Monochromatic and high-contrast */
+  --text-primary: #ffffff; /* White for primary text */
+  --text-secondary: #a1a1aa; /* Zinc-400 for secondary text */
+  --text-muted: #71717a; /* Zinc-500 for muted text */
+
+  /* Accents - Monochromatic / Subtle */
+  --accent-purple: #ffffff; 
+  --accent-cyan: #ffffff;
+  --accent-glow: rgba(255, 255, 255, 0.05);
+
+  /* Shadows - Enhanced for minimalism */
+  --shadow-float: 0px 4px 6px -1px rgba(0, 0, 0, 0.5);
+  --shadow-hover: 0px 10px 15px -3px rgba(0, 0, 0, 0.6);
+  --shadow-glow: 0px 0px 24px var(--accent-glow);
+
+  /* Spacing & Density */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
+
+  /* Typography Scale - Reverting from High Density */
+  --text-xs: 0.75rem;     /* 12px */
+  --text-sm: 0.875rem;    /* 14px */
+  --text-base: 1rem;      /* 16px */
+  --text-lg: 1.125rem;    /* 18px */
+  --text-xl: 1.25rem;     /* 20px */
+  --text-2xl: 1.5rem;     /* 24px */
+  --text-3xl: 1.875rem;   /* 30px */
+  --text-4xl: 2.25rem;    /* 36px */
+
+  /* Standard Tailwind variables mapped to our tokens */
+  --background: var(--bg-void);
+  --foreground: var(--text-primary);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@theme {
+  /* Backgrounds */
+  --color-void: var(--bg-void);
+  --color-surface: var(--bg-surface);
+  --color-elevated: var(--bg-elevated);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  /* Accents */
+  --color-accent-purple: var(--accent-purple);
+  --color-accent-cyan: var(--accent-cyan);
+
+  /* Text colors */
+  --color-primary: var(--text-primary);
+  --color-secondary: var(--text-secondary);
+  --color-muted: var(--text-muted);
+
+  /* Compatibility with text-text-* usages */
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+
+  /* Border color for border-glass-border */
+  --color-glass-border: var(--bg-glass-border);
+
+  /* Shadows */
+  --shadow-float: var(--shadow-float);
+  --shadow-hover: var(--shadow-hover);
+  --shadow-glow: var(--shadow-glow);
+
+  /* Border radius */
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
+
+  /* Floating animation */
+  --animate-float: float 4s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  @apply bg-void text-primary antialiased selection:bg-accent-purple/30;
+  font-family: var(--font-inter), system-ui, sans-serif;
+  font-size: var(--text-base);
+  line-height: 1.6;
+  letter-spacing: -0.01em;
 }
+
+h1, h2, h3, h4, h5, h6 {
+  @apply font-bold tracking-tight text-white;
+  line-height: 1.2;
+}
+
+/* High Density Utilities */
+.hd-padding { padding: 0.5rem; }
+.hd-gap { gap: 0.5rem; }
+.hd-text-meta { font-size: var(--font-size-xs); color: var(--text-secondary); }
+
+
+/* Glassmorphism utility */
+.glass {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+}
+
+/* Custom scrollbar — used in SplitWizard participant list */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 255, 255, 0.2) transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(0, 255, 255, 0.2);
+  border-radius: 9999px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 255, 255, 0.4);
+}
+
+
