@@ -4,11 +4,12 @@ import { Pool } from "pg";
 
 const getSafeDatabaseUrl = (url: string) => {
   try {
-    // Robust parsing for connection strings with special characters in passwords (like @)
     const parsed = new URL(url);
+    // Log masked connection info for debugging "Tenant or user not found"
+    console.log(`[Prisma] Connecting to ${parsed.hostname}:${parsed.port || '5432'} as ${parsed.username}`);
     return parsed.toString();
   } catch (error) {
-    console.warn("Prisma: Could not parse DATABASE_URL in getSafeDatabaseUrl", error);
+    console.warn("Prisma: Could not parse DATABASE_URL", error);
     return url;
   }
 };
@@ -21,21 +22,25 @@ const prismaClientSingleton = () => {
 
   const sanitizedUrl = getSafeDatabaseUrl(dbUrl);
 
-  // Prisma v7 requires a Driver Adapter for direct database connections.
-  // We use pg Pool with optimized settings for Serverless (Vercel).
   const pool = new Pool({
     connectionString: sanitizedUrl,
     ssl: sanitizedUrl.includes("localhost") 
       ? false 
       : { rejectUnauthorized: false },
-    max: 2, // Maximum number of clients in the pool
-    idleTimeoutMillis: 30000, // Close idle connections after 30 seconds
-    connectionTimeoutMillis: 5000, // Return an error after 5 seconds if connection cannot be established
+    max: 2,
+    idleTimeoutMillis: 30000,
+    connectionTimeoutMillis: 5000,
   });
 
-  // Track pool errors globally
   pool.on('error', (err) => {
     console.error('Prisma: Unexpected error on idle database client', err);
+    if (err.message.includes('Tenant or user not found')) {
+      console.error('---------------------------------------------------------');
+      console.error('CRITICAL: Supabase "Tenant or user not found" error detected.');
+      console.error('PERMANENT FIX: Update your DATABASE_URL to use the new regional pooler format.');
+      console.error('Format: postgresql://postgres.[PROJECT_ID]:[PASSWORD]@aws-0-[REGION].pooler.supabase.com:6543/postgres?sslmode=require');
+      console.error('---------------------------------------------------------');
+    }
   });
   
   const adapter = new PrismaPg(pool);

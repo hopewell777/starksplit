@@ -141,13 +141,20 @@ export default function LandingPage() {
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4 sm:pt-6">
-              <Button
-                variant="secondary"
-                size="lg"
-                className="w-full sm:w-auto px-8"
+              <a 
+                href="https://github.com/hopewell777/starksplit" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="w-full sm:w-auto"
               >
-                Learn More
-              </Button>
+                <Button
+                  variant="secondary"
+                  size="lg"
+                  className="w-full px-8"
+                >
+                  Learn More
+                </Button>
+              </a>
               <Button
                 onClick={() => setIsAuthModalOpen(true)}
                 size="lg"
