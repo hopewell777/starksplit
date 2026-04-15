@@ -187,7 +187,7 @@ export const useBalances = (address?: string) => {
     } finally {
       setIsLoading(false);
     }
-  }, [address, account?.chainId]);
+  }, [address, (account as any)?.chainId]);
 
   useEffect(() => {
     fetchBalances();
