@@ -11,9 +11,9 @@ const prismaClientSingleton = () => {
   // We use pg Pool with SSL configuration to handle cloud database requirements.
   const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
-    ssl: process.env.NODE_ENV === "development" 
-      ? { rejectUnauthorized: false } 
-      : undefined,
+    ssl: process.env.DATABASE_URL?.includes("localhost") 
+    ? false 
+    : { rejectUnauthorized: false },
   });
   
   const adapter = new PrismaPg(pool);
