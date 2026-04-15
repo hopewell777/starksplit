@@ -3,7 +3,7 @@ import prisma from "@/lib/prisma";
 
 export async function POST(req: Request) {
   try {
-    const { privyId, email, walletAddress } = await req.json();
+    const { privyId, email, walletAddress, username: providedUsername } = await req.json();
 
     if (!privyId) {
       return NextResponse.json({ error: "Privy ID is required" }, { status: 400 });
@@ -14,12 +14,13 @@ export async function POST(req: Request) {
       update: {
         email: email || undefined,
         walletAddress: walletAddress || undefined,
+        username: providedUsername || undefined,
       },
       create: {
         privyId,
         email: email || null,
         walletAddress: walletAddress || null,
-        username: email ? email.split("@")[0] : `user_${privyId.substring(privyId.length - 6)}`,
+        username: providedUsername || (email ? email.split("@")[0] : `user_${privyId.substring(privyId.length - 6)}`),
       },
     });
 

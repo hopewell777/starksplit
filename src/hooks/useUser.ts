@@ -14,6 +14,19 @@ interface DbUser {
   avatarUrl: string | null;
 }
 
+const getUsernameFromPrivy = (user: any) => {
+  if (!user) return undefined;
+  // Prioritize social names
+  if (user.google?.name) return user.google.name;
+  if (user.twitter?.name) return user.twitter.name;
+  if (user.twitter?.username) return user.twitter.username;
+  if (user.linkedin?.name) return user.linkedin.name;
+  if (user.discord?.username) return user.discord.username;
+  if (user.github?.username) return user.github.username;
+  if (user.email?.address) return user.email.address.split('@')[0];
+  return undefined;
+};
+
 export const useUser = () => {
   const { user, authenticated, ready } = usePrivy();
   const { address, isConnected } = useActiveStarknetAccount();
@@ -46,6 +59,7 @@ export const useUser = () => {
             privyId: user?.id || `starknet-${address}`,
             email: user?.email?.address,
             walletAddress: address || privyStarknetAddress,
+            username: getUsernameFromPrivy(user),
           }),
           signal: controller.signal,
         });
