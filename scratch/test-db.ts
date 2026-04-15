@@ -14,7 +14,7 @@ async function testConnection() {
     const res = await client.query('SELECT NOW()');
     console.log("Query result:", res.rows[0]);
     client.release();
-  } catch (err) {
+  } catch (err: any) {
     console.error("Connection failed:", err.message);
   } finally {
     await pool.end();
