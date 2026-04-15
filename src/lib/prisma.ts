@@ -8,12 +8,15 @@ const prismaClientSingleton = () => {
   }
 
   // Prisma v7 requires a Driver Adapter for direct database connections.
-  // We use pg Pool with SSL configuration to handle cloud database requirements.
+  // We use pg Pool with optimized settings for Serverless (Vercel).
   const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
     ssl: process.env.DATABASE_URL?.includes("localhost") 
-    ? false 
-    : { rejectUnauthorized: false },
+      ? false 
+      : { rejectUnauthorized: false },
+    max: 2, // Maximum number of clients in the pool
+    idleTimeoutMillis: 30000, // Close idle connections after 30 seconds
+    connectionTimeoutMillis: 2000, // Return an error after 2 seconds if connection cannot be established
   });
   
   const adapter = new PrismaPg(pool);
