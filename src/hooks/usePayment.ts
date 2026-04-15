@@ -71,7 +71,7 @@ export const usePayment = () => {
 
         const { wallet } = await sdk.onboard({
           strategy: "privy",
-          feeMode: "standard",
+          feeMode: "user_pays",
           accountPreset: ArgentXV050Preset,
           privy: {
             resolve: async () => {

@@ -1,6 +1,5 @@
 "use client";
 
-import { usePrivy } from "@privy-io/react-auth";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { motion, AnimatePresence } from "framer-motion";
@@ -291,8 +290,9 @@ export default function LandingPage() {
              Built for Starknet • Powered by Starkzap & Privy
           </p>
           <div className="flex space-x-6">
-            <a href="https://github.com/hopewell777/starksplit" target="_blank" rel="noopener noreferrer" className="text-[10px] uppercase tracking-[0.2em] font-bold text-text-muted cursor-pointer hover:text-white transition-colors">Privacy</a>
-            <a href="https://github.com/hopewell777/starksplit" target="_blank" rel="noopener noreferrer" className="text-[10px] uppercase tracking-[0.2em] font-bold text-text-muted cursor-pointer hover:text-white transition-colors">Terms</a>
+            <a href="#" className="text-[10px] uppercase tracking-[0.2em] font-bold text-text-muted cursor-pointer hover:text-white transition-colors">Privacy</a>
+            <a href="#" className="text-[10px] uppercase tracking-[0.2em] font-bold text-text-muted cursor-pointer hover:text-white transition-colors">Terms</a>
+            <a href="https://github.com/hopewell777/starksplit" target="_blank" rel="noopener noreferrer" className="text-[10px] uppercase tracking-[0.2em] font-bold text-text-muted cursor-pointer hover:text-white transition-colors">Github</a>
           </div>
         </div>
       </footer>
